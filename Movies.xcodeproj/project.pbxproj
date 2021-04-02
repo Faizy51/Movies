@@ -13,6 +13,8 @@
 		18AD56D9261765A100B8A5AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18AD56D7261765A100B8A5AA /* Main.storyboard */; };
 		18AD56DB261765A300B8A5AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18AD56DA261765A300B8A5AA /* Assets.xcassets */; };
 		18AD56DE261765A300B8A5AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18AD56DC261765A300B8A5AA /* LaunchScreen.storyboard */; };
+		18AD56E826177D9300B8A5AA /* MoviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD56E626177D9300B8A5AA /* MoviewCollectionViewCell.swift */; };
+		18AD56E926177D9300B8A5AA /* MoviewCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18AD56E726177D9300B8A5AA /* MoviewCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		18AD56DA261765A300B8A5AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18AD56DD261765A300B8A5AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18AD56DF261765A300B8A5AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18AD56E626177D9300B8A5AA /* MoviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		18AD56E726177D9300B8A5AA /* MoviewCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoviewCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,49 @@
 		18AD56D0261765A100B8A5AA /* Movies */ = {
 			isa = PBXGroup;
 			children = (
+				18AD56EB2617831C00B8A5AA /* Application */,
+				18AD56ED2617833200B8A5AA /* Controllers */,
+				18AD56EF2617833C00B8A5AA /* Views */,
+				18AD56F02617834600B8A5AA /* Resources */,
+			);
+			path = Movies;
+			sourceTree = "<group>";
+		};
+		18AD56EB2617831C00B8A5AA /* Application */ = {
+			isa = PBXGroup;
+			children = (
 				18AD56D1261765A100B8A5AA /* AppDelegate.swift */,
 				18AD56D3261765A100B8A5AA /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		18AD56ED2617833200B8A5AA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				18AD56D5261765A100B8A5AA /* ViewController.swift */,
 				18AD56D7261765A100B8A5AA /* Main.storyboard */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		18AD56EF2617833C00B8A5AA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18AD56E626177D9300B8A5AA /* MoviewCollectionViewCell.swift */,
+				18AD56E726177D9300B8A5AA /* MoviewCollectionViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		18AD56F02617834600B8A5AA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				18AD56DA261765A300B8A5AA /* Assets.xcassets */,
 				18AD56DC261765A300B8A5AA /* LaunchScreen.storyboard */,
 				18AD56DF261765A300B8A5AA /* Info.plist */,
 			);
-			path = Movies;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +165,7 @@
 				18AD56DE261765A300B8A5AA /* LaunchScreen.storyboard in Resources */,
 				18AD56DB261765A300B8A5AA /* Assets.xcassets in Resources */,
 				18AD56D9261765A100B8A5AA /* Main.storyboard in Resources */,
+				18AD56E926177D9300B8A5AA /* MoviewCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +179,7 @@
 				18AD56D6261765A100B8A5AA /* ViewController.swift in Sources */,
 				18AD56D2261765A100B8A5AA /* AppDelegate.swift in Sources */,
 				18AD56D4261765A100B8A5AA /* SceneDelegate.swift in Sources */,
+				18AD56E826177D9300B8A5AA /* MoviewCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +328,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6HN4W8V8KL;
-				INFOPLIST_FILE = Movies/Info.plist;
+				INFOPLIST_FILE = Movies/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,7 +347,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6HN4W8V8KL;
-				INFOPLIST_FILE = Movies/Info.plist;
+				INFOPLIST_FILE = Movies/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
