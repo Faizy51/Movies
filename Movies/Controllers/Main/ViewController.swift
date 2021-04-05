@@ -92,6 +92,7 @@ class ViewController: UIViewController {
             }
             DispatchQueue.main.async {
                 // Navigate to details screen
+                self.removeLoader()
                 guard let VC = UIStoryboard(name: "MovieDetailsViewController", bundle: nil).instantiateInitialViewController() as? MovieDetailsViewController else {
                     fatalError("Could not instantiate ViewController of type \(MovieDetailsViewController.description())")
                 }
@@ -131,7 +132,24 @@ class ViewController: UIViewController {
         }
         let rightButton = UIBarButtonItem(customView: navBarButton)
         self.navigationItem.rightBarButtonItem = rightButton
-        
+    }
+    
+    func addLoader() {
+        let loaderView = UIView(frame: self.view.frame)
+        loaderView.backgroundColor = .white
+        loaderView.alpha = 0.75
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .black
+        indicator.frame = loaderView.frame
+        loaderView.addSubview(indicator)
+        indicator.startAnimating()
+        loaderView.tag = 1298
+        view.addSubview(loaderView)
+    }
+    
+    func removeLoader() {
+        let loaderView = self.view.viewWithTag(1298)
+        loaderView?.removeFromSuperview()
     }
     
 }
@@ -204,6 +222,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.addLoader()
         viewModel.fetchMovieDetails(for: indexPath.row)
     }
     
