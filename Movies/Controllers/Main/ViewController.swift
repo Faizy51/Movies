@@ -11,6 +11,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var emptyView: UIView!
+    @IBOutlet weak var viewChangeBarButton: UIBarButtonItem!
     
     var viewModel: ViewModel!
     var debounce_timer: Timer?
@@ -18,15 +19,18 @@ class ViewController: UIViewController {
     var paginationActivity = UIActivityIndicatorView(style: .large)
     var fetchingMore = false
     var currentPage = 1
+    var numberOfRows = 3
     let FOOTER_ID = "footer"
     let HEADER_ID = "header"
+    let LIST_IMAGE = UIImage(systemName: "list.bullet")
+    let GRID_IMAGE = UIImage(systemName: "square.grid.2x2.fill")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = ViewModelImplementation() // Make this a dependency
         setupCollectionView()
         configureSearch()
-        
+        updateRighBarButton(isGrid: true)
         bindViewModel()
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationController?.navigationBar.backgroundColor = .systemGray6
@@ -64,10 +68,10 @@ class ViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            self.fetchingMore = false
             DispatchQueue.main.async {
                 self.paginationActivity.stopAnimating()
                 self.refreshUI()
+                self.fetchingMore = false
             }
         }
         
@@ -86,12 +90,55 @@ class ViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
+        
+        viewModel.didFetchMovieDetailsSucceed = { [weak self] movie in
+            guard let self = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                // Navigate to details screen
+                guard let VC = UIStoryboard(name: "MovieDetailsViewController", bundle: nil).instantiateInitialViewController() as? MovieDetailsViewController else {
+                    fatalError("Could not instantiate ViewController of type \(MovieDetailsViewController.description())")
+                }
+                let VM = MovieDetailsViewModelImplementation(movie: movie)
+                VC.viewModel = VM
+                self.navigationController?.pushViewController(VC, animated: true)
+            }
+        }
+        
     }
     
     private func refreshUI() {
         emptyView.isHidden = !(viewModel.movies?.count == 0)
         collectionView.reloadSections(IndexSet.init(integer: 0))
     }
+    
+    @objc func didTapViewChangeButton(_ sender: UIBarButtonItem) {
+        if numberOfRows == 1 {
+            numberOfRows = 3
+            updateRighBarButton(isGrid: true)
+        } else {
+            numberOfRows = 1
+            updateRighBarButton(isGrid: false)
+        }
+        collectionView.reloadData()
+    }
+    
+    func updateRighBarButton(isGrid : Bool){
+        let btnFavourite = UIButton(type: .custom)
+        btnFavourite.frame = CGRect(x: 0,y: 0,width: 60,height: 60)
+        btnFavourite.addTarget(self, action: #selector(didTapViewChangeButton(_:)), for: .touchUpInside)
+
+        if isGrid {
+            btnFavourite.setImage(LIST_IMAGE, for: .normal)
+        } else {
+            btnFavourite.setImage(GRID_IMAGE, for: .normal)
+        }
+        let rightButton = UIBarButtonItem(customView: btnFavourite)
+        self.navigationItem.rightBarButtonItem = rightButton
+        
+    }
+    
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -120,8 +167,12 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = (view.frame.size.width / CGFloat(3)) - 15
-        return CGSize(width: cellWidth, height: 223.0)
+        if numberOfRows == 1 {
+            let cellWidth = (view.frame.size.width / CGFloat(numberOfRows)) - 100
+            return CGSize(width: cellWidth, height: (223))
+        }
+        let cellWidth = (view.frame.size.width / CGFloat(numberOfRows)) - 15
+        return CGSize(width: cellWidth, height: (223.0))
     }
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -165,11 +216,15 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             return CGSize(width: 60.0, height: 60.0)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.fetchMovieDetails(for: indexPath.row)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let moviesCount = viewModel.movies?.count else {
             return
         }
-        if (indexPath.row == moviesCount - 1 ) { //it's your last cell
+        if (indexPath.row == moviesCount - 1) && (moviesCount > 9) { //it's your last cell
           //Load more data & reload your collection view
            if !fetchingMore {
                beginBatchFetch()
@@ -181,9 +236,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         self.paginationActivity.startAnimating()
         self.fetchingMore = true
         viewModel.isPaginating = true
-        
+        currentPage = currentPage + 1
         viewModel.fetchMovies(for: searchController.searchBar.searchTextField.text, pageNumber: currentPage)
-        
     }
     
 }

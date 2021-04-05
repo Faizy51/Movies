@@ -26,4 +26,8 @@ class MoviewCollectionViewCell: UICollectionViewCell {
         movieImageView.layer.cornerRadius = 5
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.movieImageView.image = nil
+    }
 }

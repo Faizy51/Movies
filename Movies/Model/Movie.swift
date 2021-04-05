@@ -9,8 +9,6 @@ import Foundation
 
 struct Result: Codable {
     var Search: [Movie]?
-//    var totalResults: Int?
-//    var Response: Bool?
 }
 
 struct Movie: Codable {
