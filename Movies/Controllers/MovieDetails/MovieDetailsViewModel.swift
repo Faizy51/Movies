@@ -13,6 +13,8 @@ protocol MovieDetailsViewModel {
     
     func info(at index: Int) -> String
     func getGenre(at index: Int) -> String
+    func getText(for index: Int) -> String
+    func getGenreCount() -> Int
 }
 
 class MovieDetailsViewModelImplementation: MovieDetailsViewModel {
@@ -61,5 +63,13 @@ class MovieDetailsViewModelImplementation: MovieDetailsViewModel {
             return "\(genres[index])".trimmingCharacters(in: .whitespaces)
         }
         return ""
+    }
+    
+    func getText(for index: Int) -> String {
+        return "\(details[index]): " + info(at: index)
+    }
+    
+    func getGenreCount() -> Int {
+        return movie?.Genre?.split(separator: ",").count ?? 0
     }
 }

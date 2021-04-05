@@ -24,6 +24,10 @@ class ViewController: UIViewController {
     let HEADER_ID = "header"
     let LIST_IMAGE = UIImage(systemName: "list.bullet")
     let GRID_IMAGE = UIImage(systemName: "square.grid.2x2.fill")
+    let FOOTER_SIZE: CGFloat = 60
+    let HEADER_HEIGHT: CGFloat = 50
+    let INSET: CGFloat = 10
+    let BAR_BUTTON_SIZE: CGFloat = 60
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,15 +56,6 @@ class ViewController: UIViewController {
         search.searchBar.delegate = self
         navigationItem.searchController = search
         self.searchController = search
-        
-//        let searchBarTextField = search.searchBar.searchTextField
-//        searchBarTextField.textColor = UIColor.black
-//        searchBarTextField.font = UIFont.systemFont(ofSize: 14)
-//        searchBarTextField.layer.cornerRadius = 4
-//        searchBarTextField.layer.borderWidth = 1
-//        searchBarTextField.layer.borderColor = UIColor.clear.cgColor
-//        searchBarTextField.leftView = UIImageView(image: UIImage(named: "Search"))
-
     }
 
     private func bindViewModel() {
@@ -125,16 +120,16 @@ class ViewController: UIViewController {
     }
     
     func updateRighBarButton(isGrid : Bool){
-        let btnFavourite = UIButton(type: .custom)
-        btnFavourite.frame = CGRect(x: 0,y: 0,width: 60,height: 60)
-        btnFavourite.addTarget(self, action: #selector(didTapViewChangeButton(_:)), for: .touchUpInside)
+        let navBarButton = UIButton(type: .custom)
+        navBarButton.frame = CGRect(x: 0, y: 0, width: BAR_BUTTON_SIZE, height: BAR_BUTTON_SIZE)
+        navBarButton.addTarget(self, action: #selector(didTapViewChangeButton(_:)), for: .touchUpInside)
 
         if isGrid {
-            btnFavourite.setImage(LIST_IMAGE, for: .normal)
+            navBarButton.setImage(LIST_IMAGE, for: .normal)
         } else {
-            btnFavourite.setImage(GRID_IMAGE, for: .normal)
+            navBarButton.setImage(GRID_IMAGE, for: .normal)
         }
-        let rightButton = UIBarButtonItem(customView: btnFavourite)
+        let rightButton = UIBarButtonItem(customView: navBarButton)
         self.navigationItem.rightBarButtonItem = rightButton
         
     }
@@ -163,7 +158,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
+        return UIEdgeInsets(top: INSET, left: INSET, bottom: INSET, right: INSET);
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -174,14 +169,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         let cellWidth = (view.frame.size.width / CGFloat(numberOfRows)) - 15
         return CGSize(width: cellWidth, height: (223.0))
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return ITEM_SPACING
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return ROW_SPACING
-//    }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
@@ -209,11 +196,11 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            return CGSize(width: collectionView.frame.width, height: 50)
+            return CGSize(width: collectionView.frame.width, height: HEADER_HEIGHT)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-            return CGSize(width: 60.0, height: 60.0)
+            return CGSize(width: FOOTER_SIZE, height: FOOTER_SIZE)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -244,52 +231,14 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
 
 extension ViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
+        cache.removeAllObjects()
         self.currentPage = 1
         viewModel.isPaginating = false
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
         debounce_timer?.invalidate()
-        debounce_timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+        debounce_timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
             self.viewModel.fetchMovies(for: text, pageNumber: self.currentPage)
         }
     }
     
-//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//        let searchBarTextField = searchController.searchBar.searchTextField
-//        searchBarTextField.layer.borderColor = UIColor(red: 0.37, green: 0.34, blue: 0.91, alpha: 1.00).cgColor
-//
-//    }
-//
-//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        let searchBarTextField = searchController.searchBar.searchTextField
-//        searchBarTextField.layer.borderColor = UIColor.clear.cgColor
-//    }
-    
 }
-
-class MovieImageView: UIImageView {
-    
-    var urlString: String?
-    
-    func fetchImage(for urlString: String) {
-        self.urlString = urlString
-        if let url =  URL(string: urlString) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                DispatchQueue.main.async {
-                    guard let data = data, error == nil else {
-                        // show alert or retry
-                        self.image = UIImage(named: "placeholder")
-                        return
-                    }
-                    if urlString == self.urlString {
-                        self.image = UIImage(data: data)
-                    }
-                }
-                
-            }.resume()
-        } else {
-            self.image = UIImage(named: "placeholder")
-        }
-    }
-
-}
-

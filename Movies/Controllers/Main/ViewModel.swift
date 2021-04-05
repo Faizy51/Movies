@@ -65,8 +65,4 @@ class ViewModelImplementation: ViewModel {
         return movie
     }
     
-//    func fetchImage(for urlString: String, success: @escaping (Data)->Void, failure: @escaping ()->Void ) {
-//        self.movieService.downloadImage(for: urlString, success: success, failure: failure)
-//    }
-    
 }

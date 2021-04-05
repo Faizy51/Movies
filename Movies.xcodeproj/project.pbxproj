@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18448ECC261B67BC00C31D67 /* MovieImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18448ECB261B67BC00C31D67 /* MovieImageView.swift */; };
 		18AD56D2261765A100B8A5AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD56D1261765A100B8A5AA /* AppDelegate.swift */; };
 		18AD56D4261765A100B8A5AA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD56D3261765A100B8A5AA /* SceneDelegate.swift */; };
 		18AD56D6261765A100B8A5AA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD56D5261765A100B8A5AA /* ViewController.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18448ECB261B67BC00C31D67 /* MovieImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImageView.swift; sourceTree = "<group>"; };
 		18AD56CE261765A100B8A5AA /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18AD56D1261765A100B8A5AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18AD56D3261765A100B8A5AA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				18448EC7261B667A00C31D67 /* Genre Cell */,
 				18448EC9261B669500C31D67 /* Movie Cell */,
+				18448ECB261B67BC00C31D67 /* MovieImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				18AD5717261B543600B8A5AA /* GenreCollectionViewCell.swift in Sources */,
 				18AD56D2261765A100B8A5AA /* AppDelegate.swift in Sources */,
 				18AD5713261B38E200B8A5AA /* MovieDetails.swift in Sources */,
+				18448ECC261B67BC00C31D67 /* MovieImageView.swift in Sources */,
 				18AD56F62617885300B8A5AA /* Movie.swift in Sources */,
 				18AD56F3261783C900B8A5AA /* NetworkManager.swift in Sources */,
 				18AD56D4261765A100B8A5AA /* SceneDelegate.swift in Sources */,

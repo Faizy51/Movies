@@ -21,6 +21,8 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         populateUI()
+        setupTableView()
+        setupGenreCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,19 +35,25 @@ class MovieDetailsViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellId)
+        tableView.tableFooterView = UIView()
+    }
+    
+    private func setupGenreCollectionView() {
+        genreCollectionView.delegate = self
+        genreCollectionView.dataSource = self
+        genreCollectionView.register(GenreCollectionViewCell.nib(), forCellWithReuseIdentifier: GenreCollectionViewCell.identifier)
+        (genreCollectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+    }
 
     private func populateUI() {
         guard let movie = viewModel.movie else { return }
         movieImageView.fetchImage(for: movie.Poster ?? "")
         descriptionLabel.text = movie.Plot
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellId)
-        tableView.tableFooterView = UIView()
-        genreCollectionView.delegate = self
-        genreCollectionView.dataSource = self
-        genreCollectionView.register(GenreCollectionViewCell.nib(), forCellWithReuseIdentifier: GenreCollectionViewCell.identifier)
-        (genreCollectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
     }
 }
 
@@ -65,7 +73,7 @@ extension MovieDetailsViewController: UITableViewDelegate, UITableViewDataSource
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         cell.textLabel?.tintColor = .systemGray6
         cell.textLabel?.textColor = .darkGray
-        cell.textLabel?.text = "\(viewModel.details[indexPath.row]): " + viewModel.info(at: indexPath.row)
+        cell.textLabel?.text = viewModel.getText(for: indexPath.row)
         
         return cell
     }
@@ -74,7 +82,7 @@ extension MovieDetailsViewController: UITableViewDelegate, UITableViewDataSource
 
 extension MovieDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.movie?.Genre?.split(separator: ",").count ?? 0
+        return viewModel.getGenreCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -84,8 +92,4 @@ extension MovieDetailsViewController: UICollectionViewDelegate, UICollectionView
         cell.genreLabel.text = viewModel.getGenre(at: indexPath.row)
         return cell
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 114, height: 215)
-//    }
 }

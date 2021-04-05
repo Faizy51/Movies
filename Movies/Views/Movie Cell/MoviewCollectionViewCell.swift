@@ -21,7 +21,10 @@ class MoviewCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        setup()
+    }
+    
+    private func setup() {
         movieImageView.clipsToBounds = true
         movieImageView.layer.cornerRadius = 5
     }
