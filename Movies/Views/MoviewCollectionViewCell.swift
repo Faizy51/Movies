@@ -9,7 +9,7 @@ import UIKit
 
 class MoviewCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var movieImageView: UIImageView!
+    @IBOutlet weak var movieImageView: MovieImageView!
     @IBOutlet weak var movieNameLabel: UILabel!
     @IBOutlet weak var movieGenreLabel: UILabel!
     
@@ -22,6 +22,8 @@ class MoviewCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        movieImageView.clipsToBounds = true
+        movieImageView.layer.cornerRadius = 5
     }
 
 }

@@ -1,0 +1,60 @@
+//
+//  NetworkManager.swift
+//  Movies
+//
+//  Created by Faizyy on 02/04/21.
+//
+
+import Foundation
+
+class NetworkManager {
+    private let API_KEY = "78f17a3c" // TODO: Insecure!!! - store this externally.
+    let baseUrl = "http://www.omdbapi.com/?apikey="
+    let session = URLSession.shared
+    
+    func getUrl(for searchTerm: String?, pageNumber: Int?) -> URL {
+        var string = baseUrl + API_KEY
+        if let text = searchTerm?.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
+            string += "&s=\(text)"
+        }
+        if let page = pageNumber {
+            string += "&page=\(page)"
+        }
+        guard let url = URL(string: string) else {
+            fatalError("Cannot create url from string: \(string)")
+        }
+        return url
+    }
+    
+    func downloadMovies(for searchTerm: String?, pageNumber: Int, success: @escaping (Result)->Void, failure: @escaping (Error?)->Void ) {
+        let url = getUrl(for: searchTerm, pageNumber: pageNumber)
+        session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                failure(error)
+                return
+            }
+            if let json = data {
+                do {
+                    let result = try JSONDecoder().decode(Result.self, from: json)
+                    success(result)
+                } catch (let error) {
+                    failure(error)
+                }
+            } else {
+                failure(error)
+            }
+        }.resume()
+    }
+    
+//    func downloadImage(for urlString: String, success: @escaping (Data)->Void, failure: @escaping ()->Void ) {
+//        if let url = URL(string: urlString) {
+//            session.dataTask(with: url) { (data, response, error) in
+//                if let data = data {
+//                    success(data)
+//                    return
+//                }
+//            }
+//        }
+//        failure()
+//    }
+}
