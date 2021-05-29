@@ -14,5 +14,5 @@
 ## Future Enhancements
 - Need support for landscape mode.
 
-### References
+## References
 - API Used - https://www.omdbapi.com/
